@@ -29,6 +29,8 @@
 !/skill_generation/
 !/openclaw-skill/
 !/cli-hub-meta-skill/
+!/skills/
+!/skills/**
 
 # Ignore cli-hub-skill (auto-generated, not tracked)
 /cli-hub-skill/
