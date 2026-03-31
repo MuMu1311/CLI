@@ -1,7 +1,20 @@
 # Skill Packs
 
-- `knowledge/awesome-ai-pedia` - AI learning and workflow references
-- `document/docx` - Word document creation and editing
-- `browser/github-chinese` - GitHub Chinese localization and userscript support
+## Knowledge
 
-Each folder contains a standalone `SKILL.md`.
+- `knowledge/awesome-ai-pedia` - curated AI learning paths, tools, and workflows
+
+## Document
+
+- `document/docx` - Word document creation, editing, validation, and conversion
+
+## Browser
+
+- `browser/github-chinese` - GitHub UI localization and userscript setup
+
+## How to use
+
+1. Open the skill that matches the task.
+2. Read its workflow and pitfalls first.
+3. Use the source repository as the canonical reference.
+4. Keep the smallest useful example and adapt it.
