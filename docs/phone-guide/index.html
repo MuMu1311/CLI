@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>2500元内高性价比手机选购指南</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f5f1ea;
+      --surface: rgba(255,255,255,.78);
+      --surface-strong: #ffffff;
+      --text: #1f1a17;
+      --muted: #6d6259;
+      --line: rgba(62, 53, 46, .12);
+      --accent: #1d4ed8;
+      --accent-2: #d97706;
+      --shadow: 0 18px 45px rgba(55, 44, 36, .10);
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; min-height: 100%; }
+    body {
+      font-family: 'Noto Sans SC', sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top left, rgba(29,78,216,.10), transparent 34%),
+        radial-gradient(circle at 80% 10%, rgba(217,119,6,.10), transparent 28%),
+        linear-gradient(180deg, #faf7f2 0%, var(--bg) 100%);
+    }
+    .glass { background: var(--surface); backdrop-filter: blur(14px); border: 1px solid var(--line); box-shadow: var(--shadow); }
+    .card { transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease; }
+    .card:hover { transform: translateY(-4px); box-shadow: 0 22px 60px rgba(55, 44, 36, .14); border-color: rgba(29,78,216,.20); }
+    .chart-wrap { min-height: 320px; }
+    .badge { display:inline-flex; align-items:center; gap:.35rem; padding:.35rem .65rem; border-radius:999px; font-size:.76rem; font-weight:700; }
+    .badge-new { background:#dbeafe; color:#1d4ed8; }
+    .badge-used { background:#ffedd5; color:#b45309; }
+    .badge-flagship { background:#fee2e2; color:#b91c1c; }
+    .badge-mid { background:#dcfce7; color:#166534; }
+    .badge-entry { background:#e0e7ff; color:#3730a3; }
+    .modal-enter { opacity: 0; transform: scale(.96); }
+    .modal-enter-active { opacity: 1; transform: scale(1); transition: opacity .22s ease, transform .22s ease; }
+  </style>
+</head>
+<body class="min-h-screen">
+  <header class="relative overflow-hidden border-b border-[var(--line)]">
+    <div class="absolute inset-0 opacity-70" style="background: linear-gradient(135deg, rgba(29,78,216,.14), rgba(217,119,6,.10));"></div>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <div class="max-w-3xl">
+        <p class="text-sm font-bold tracking-[.22em] uppercase text-slate-600 mb-3">2026 / 03</p>
+        <h1 class="text-3xl sm:text-5xl font-extrabold leading-tight mb-4">2500元内高性价比手机选购指南</h1>
+        <p class="text-base sm:text-lg text-[var(--muted)] leading-8">一个面向“性能、续航、拍照、二手旗舰”的单页选购站。你可以先看图表，再筛选，再点卡片看细节。</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <section class="grid lg:grid-cols-[1.2fr,.8fr] gap-6 mb-8">
+      <div class="glass rounded-3xl p-5 sm:p-7">
+        <div class="flex items-end justify-between gap-4 mb-4">
+          <div>
+            <h2 class="text-2xl font-extrabold mb-1">市场洞察</h2>
+            <p class="text-sm text-[var(--muted)]">价格 / 性能散点图 + 新旧机占比</p>
+          </div>
+          <div class="text-xs text-slate-500">点击卡片查看更多</div>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="glass rounded-2xl p-3 chart-wrap">
+            <canvas id="scatterChart"></canvas>
+          </div>
+          <div class="glass rounded-2xl p-3 chart-wrap">
+            <canvas id="donutChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <aside class="glass rounded-3xl p-5 sm:p-7">
+        <h2 class="text-2xl font-extrabold mb-2">筛选器</h2>
+        <p class="text-sm text-[var(--muted)] mb-5">按预算、新旧、性能快速收窄范围。</p>
+        <div class="space-y-4">
+          <label class="block">
+            <span class="text-sm font-bold">预算范围</span>
+            <select id="priceFilter" class="mt-2 w-full rounded-2xl border border-[var(--line)] bg-white/90 px-4 py-3 outline-none">
+              <option value="all">全部</option>
+              <option value="high">2000 - 2600 元</option>
+              <option value="mid">1500 - 2000 元</option>
+              <option value="low">1500 元以内</option>
+            </select>
+          </label>
+          <label class="block">
+            <span class="text-sm font-bold">新旧偏好</span>
+            <select id="statusFilter" class="mt-2 w-full rounded-2xl border border-[var(--line)] bg-white/90 px-4 py-3 outline-none">
+              <option value="all">全部</option>
+              <option value="new">仅全新</option>
+              <option value="used">仅二手</option>
+            </select>
+          </label>
+          <label class="block">
+            <span class="text-sm font-bold">性能梯队</span>
+            <select id="perfFilter" class="mt-2 w-full rounded-2xl border border-[var(--line)] bg-white/90 px-4 py-3 outline-none">
+              <option value="all">全部</option>
+              <option value="flagship">旗舰级</option>
+              <option value="sub_flagship">次旗舰级</option>
+              <option value="entry">中端 / 入门级</option>
+            </select>
+          </label>
+          <div class="rounded-2xl bg-slate-950 text-white p-4">
+            <div class="text-xs text-slate-300 mb-1">当前结果</div>
+            <div class="text-3xl font-black"><span id="resultCount">0</span> 款</div>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <section>
+      <div class="flex items-end justify-between gap-4 mb-4">
+        <div>
+          <h2 class="text-2xl font-extrabold">推荐机型库</h2>
+          <p class="text-sm text-[var(--muted)]">点击卡片查看亮点、短板与适配人群。</p>
+        </div>
+      </div>
+      <div id="phoneGrid" class="grid sm:grid-cols-2 xl:grid-cols-3 gap-5"></div>
+    </section>
+  </main>
+
+  <div id="phoneModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 p-4">
+    <div class="modal-shell glass relative w-full max-w-2xl max-h-[90vh] overflow-hidden rounded-3xl bg-white p-6 sm:p-8">
+      <button id="closeModalBtn" class="absolute right-4 top-4 text-2xl font-black text-slate-400 hover:text-slate-900">×</button>
+      <div class="overflow-y-auto pr-2 max-h-[78vh]">
+        <div class="mb-5">
+          <h3 id="modalName" class="text-2xl font-extrabold mb-2"></h3>
+          <div class="flex flex-wrap gap-2 items-center">
+            <span id="modalStatus" class="badge"></span>
+            <span id="modalPrice" class="font-bold text-lg text-[var(--accent)]"></span>
+          </div>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-4 mb-5">
+          <div class="rounded-2xl bg-slate-50 p-4 border border-[var(--line)]"><div class="text-xs text-slate-500 mb-1">CPU</div><div id="modalCpu" class="font-bold"></div></div>
+          <div class="rounded-2xl bg-slate-50 p-4 border border-[var(--line)]"><div class="text-xs text-slate-500 mb-1">GPU / 梯队</div><div id="modalGpu" class="font-bold"></div><div id="modalGpuTier" class="text-sm text-[var(--accent)] font-bold mt-1"></div></div>
+        </div>
+        <div class="grid md:grid-cols-2 gap-5">
+          <div>
+            <h4 class="font-extrabold text-emerald-700 mb-3">亮点</h4>
+            <ul id="modalHighlights" class="list-disc pl-5 space-y-2 text-slate-700"></ul>
+          </div>
+          <div>
+            <h4 class="font-extrabold text-rose-700 mb-3">短板</h4>
+            <ul id="modalWeaknesses" class="list-disc pl-5 space-y-2 text-slate-700"></ul>
+          </div>
+        </div>
+        <div class="mt-5 rounded-2xl bg-indigo-50 border border-indigo-100 p-5">
+          <h4 class="font-extrabold text-indigo-800 mb-2">适配人群</h4>
+          <p id="modalAudience" class="text-indigo-950 leading-7"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const phoneData = [
+      { id: 1, name: 'iQOO Z10 Turbo+', tierGroup: 'high', statusGroup: 'new', perfGroup: 'flagship', cpu: '天玑 9400+', gpu: 'Immortalis-G720 MC11', gpuTier: '旗舰级', priceStr: '全新 1999元 / 16+256G', avgPrice: 1999, perfScore: 98, highlights: ['性能顶格，重度游戏 / 多任务无压力', '8000mAh 大电池，续航很强', '电竞芯片加持，超分插帧体验好'], weaknesses: ['拍照一般，缺少OIS', '屏幕护眼与亮度不算顶'], audience: '优先性能和续航，拍照要求不高的用户。' },
+      { id: 2, name: 'OPPO Find X8 (二手)', tierGroup: 'high', statusGroup: 'used', perfGroup: 'flagship', cpu: '骁龙 8 Gen3', gpu: 'Adreno 750', gpuTier: '旗舰级', priceStr: '二手 1800-2400元 / 12+256G', avgPrice: 2100, perfScore: 95, highlights: ['旗舰级性能，流畅度有保障', '哈苏影像，全焦段覆盖', '1.5K LTPO 护眼屏'], weaknesses: ['仅二手在预算内', '验机要看屏幕、电池、镜头'], audience: '接受二手，想兼顾旗舰性能和影像的人。' },
+      { id: 3, name: '一加 Ace 3', tierGroup: 'high', statusGroup: 'new', perfGroup: 'flagship', cpu: '骁龙 8 Gen2', gpu: 'Adreno 740', gpuTier: '旗舰级', priceStr: '全新 2299元 / 12+256G', avgPrice: 2299, perfScore: 90, highlights: ['性能、屏幕、续航均衡', '5500mAh 电池 + 100W快充', '影像够用、没有明显短板'], weaknesses: ['机身偏重', '超广角一般'], audience: '想要全新机、均衡型体验的用户。' },
+      { id: 4, name: '红米 Turbo 5 Max', tierGroup: 'mid', statusGroup: 'new', perfGroup: 'sub_flagship', cpu: '骁龙 8s Gen3', gpu: 'Adreno 735', gpuTier: '次旗舰级', priceStr: '全新 1899元 / 12+256G', avgPrice: 1899, perfScore: 85, highlights: ['性能强，主流游戏够用', '6200mAh 大电池', '1.5K 高刷护眼屏'], weaknesses: ['拍照普通', '质感一般'], audience: '性能优先、预算控制在 2000 左右。' },
+      { id: 5, name: '一加 Ace 3V', tierGroup: 'mid', statusGroup: 'new', perfGroup: 'sub_flagship', cpu: '骁龙 7+ Gen3', gpu: 'Adreno 725', gpuTier: '次旗舰级', priceStr: '全新 1599元 / 12+256G', avgPrice: 1599, perfScore: 80, highlights: ['性能够强、发热控制好', '100W 快充', '屏幕与手感都不错'], weaknesses: ['拍照一般', '塑料机身'], audience: '想买全新机，性能和快充都要的人。' },
+      { id: 6, name: '荣耀 X70', tierGroup: 'mid', statusGroup: 'new', perfGroup: 'entry', cpu: '骁龙 6 Gen4', gpu: 'Adreno 710', gpuTier: '入门级', priceStr: '全新 1598元 / 12+256G', avgPrice: 1598, perfScore: 55, highlights: ['8300mAh 超大电池', '护眼屏，适合长时间刷剧', '抗摔防水做得不错'], weaknesses: ['重度游戏吃力', '影像上限低'], audience: '续航和耐用优先的备用机用户。' },
+      { id: 7, name: '红米 Note 15 Pro+', tierGroup: 'low', statusGroup: 'new', perfGroup: 'entry', cpu: '骁龙 6 Gen3', gpu: 'Adreno 710', gpuTier: '入门级', priceStr: '全新 1299元 / 8+256G', avgPrice: 1299, perfScore: 45, highlights: ['7000mAh 大电池', '2K 护眼曲屏', '价格低，性价比高'], weaknesses: ['性能弱', '拍照一般'], audience: '预算不高，重视续航和屏幕观感。' },
+      { id: 8, name: '一加 Ace 2 (二手)', tierGroup: 'low', statusGroup: 'used', perfGroup: 'entry', cpu: '骁龙 8+ Gen1', gpu: 'Adreno 730', gpuTier: '中端旗舰级', priceStr: '二手 800-1100元 / 12+256G', avgPrice: 950, perfScore: 68, highlights: ['老旗舰，性能依旧够用', '67W 快充', '二手价格很低'], weaknesses: ['机型较老', '二手需仔细验机'], audience: '极限预算，接受二手，重视性能够用。' }
+    ];
+
+    const els = {
+      price: document.getElementById('priceFilter'),
+      status: document.getElementById('statusFilter'),
+      perf: document.getElementById('perfFilter'),
+      grid: document.getElementById('phoneGrid'),
+      count: document.getElementById('resultCount'),
+      modal: document.getElementById('phoneModal'),
+      close: document.getElementById('closeModalBtn')
+    };
+
+    let filtered = [...phoneData];
+    let scatterChart, donutChart;
+
+    function donutData(data) {
+      const newCount = data.filter(i => i.statusGroup === 'new').length;
+      const usedCount = data.length - newCount;
+      return { labels: ['全新机', '二手'], datasets: [{ data: [newCount, usedCount], backgroundColor: ['#1d4ed8', '#d97706'], borderWidth: 0 }] };
+    }
+
+    function scatterData(data) {
+      return { datasets: [{ data: data.map(i => ({ x: i.avgPrice, y: i.perfScore, label: i.name })), backgroundColor: data.map(i => i.statusGroup === 'new' ? 'rgba(29,78,216,.78)' : 'rgba(217,119,6,.78)'), borderWidth: 1, pointRadius: 6, pointHoverRadius: 8 }] };
+    }
+
+    function initCharts() {
+      scatterChart = new Chart(document.getElementById('scatterChart'), {
+        type: 'scatter',
+        data: scatterData(filtered),
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => `${c.raw.label}：￥${c.raw.x} / 性能 ${c.raw.y}` } } }, scales: { x: { title: { display: true, text: '参考均价（元）' }, min: 800, max: 2500 }, y: { title: { display: true, text: '性能估分' }, min: 35, max: 100 } } }
+      });
+      donutChart = new Chart(document.getElementById('donutChart'), {
+        type: 'doughnut',
+        data: donutData(filtered),
+        options: { responsive: true, maintainAspectRatio: false, cutout: '66%', plugins: { legend: { position: 'bottom' } } }
+      });
+    }
+
+    function render() {
+      els.grid.innerHTML = '';
+      els.count.textContent = filtered.length;
+      if (!filtered.length) {
+        els.grid.innerHTML = '<div class="col-span-full text-center py-10 text-slate-500">没有匹配的机型，试试放宽筛选。</div>';
+      }
+      filtered.forEach(phone => {
+        const statusCls = phone.statusGroup === 'new' ? 'badge-new' : 'badge-used';
+        const tierCls = phone.perfGroup === 'flagship' ? 'badge-flagship' : phone.perfGroup === 'sub_flagship' ? 'badge-mid' : 'badge-entry';
+        const card = document.createElement('button');
+        card.type = 'button';
+        card.className = 'card glass rounded-3xl p-5 text-left';
+        card.onclick = () => openModal(phone.id);
+        card.innerHTML = `
+          <div class="flex items-start justify-between gap-3 mb-3">
+            <h3 class="text-lg font-extrabold leading-tight">${phone.name}</h3>
+            <span class="badge ${statusCls}">${phone.statusGroup === 'new' ? '全新' : '二手'}</span>
+          </div>
+          <div class="text-2xl font-black text-[var(--accent)] mb-3">¥${phone.avgPrice}</div>
+          <div class="space-y-2 text-sm text-slate-600">
+            <div>🧠 ${phone.cpu}</div>
+            <div>🎮 ${phone.gpu}</div>
+            <span class="badge ${tierCls} mt-2">${phone.gpuTier}</span>
+          </div>
+          <div class="mt-4 pt-4 border-t border-[var(--line)] text-sm text-slate-500 line-clamp-2">${phone.priceStr}</div>
+        `;
+        els.grid.appendChild(card);
+      });
+      scatterChart.data = scatterData(filtered);
+      scatterChart.update();
+      donutChart.data = donutData(filtered);
+      donutChart.update();
+    }
+
+    function filter() {
+      filtered = phoneData.filter(p => (els.price.value === 'all' || p.tierGroup === els.price.value) && (els.status.value === 'all' || p.statusGroup === els.status.value) && (els.perf.value === 'all' || p.perfGroup === els.perf.value));
+      render();
+    }
+
+    function openModal(id) {
+      const phone = phoneData.find(p => p.id === id);
+      if (!phone) return;
+      document.getElementById('modalName').textContent = phone.name;
+      const badge = document.getElementById('modalStatus');
+      badge.textContent = phone.statusGroup === 'new' ? '全新机' : '二手机';
+      badge.className = `badge ${phone.statusGroup === 'new' ? 'badge-new' : 'badge-used'}`;
+      document.getElementById('modalPrice').textContent = phone.priceStr;
+      document.getElementById('modalCpu').textContent = phone.cpu;
+      document.getElementById('modalGpu').textContent = phone.gpu;
+      document.getElementById('modalGpuTier').textContent = phone.gpuTier;
+      document.getElementById('modalHighlights').innerHTML = phone.highlights.map(v => `<li>${v}</li>`).join('');
+      document.getElementById('modalWeaknesses').innerHTML = phone.weaknesses.map(v => `<li>${v}</li>`).join('');
+      document.getElementById('modalAudience').textContent = phone.audience;
+      els.modal.classList.remove('hidden');
+      els.modal.classList.add('flex');
+      els.modal.querySelector('.modal-shell').classList.remove('modal-enter');
+      els.modal.querySelector('.modal-shell').classList.add('modal-enter-active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      els.modal.classList.add('hidden');
+      els.modal.classList.remove('flex');
+      document.body.style.overflow = '';
+    }
+
+    els.price.addEventListener('change', filter);
+    els.status.addEventListener('change', filter);
+    els.perf.addEventListener('change', filter);
+    els.close.addEventListener('click', closeModal);
+    els.modal.addEventListener('click', e => { if (e.target === els.modal) closeModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+    initCharts();
+    render();
+  </script>
+</body>
+</html>
