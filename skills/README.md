@@ -16,6 +16,10 @@
 
 - `browser/github-chinese` - GitHub UI localization and userscript setup
 
+## Development
+
+- `development/skill-github-publisher` - safely package, scan, commit, and publish Codex skills to GitHub
+
 ## How to use
 
 1. Open the skill that matches the task.

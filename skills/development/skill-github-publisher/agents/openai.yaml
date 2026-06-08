@@ -1,0 +1,4 @@
+interface:
+  display_name: "Skill GitHub Publisher"
+  short_description: "Publish skills safely to GitHub"
+  default_prompt: "Use $skill-github-publisher to safely package, scan, commit, and publish a Codex skill to GitHub."

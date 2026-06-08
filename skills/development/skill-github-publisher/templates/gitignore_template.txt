@@ -1,0 +1,65 @@
+# Secrets
+.env
+.env.*
+*.key
+*.pem
+*.p12
+*.crt
+*token*
+*secret*
+*password*
+
+# Logs and caches
+logs/
+log/
+cache/
+tmp/
+temp/
+*.log
+__pycache__/
+.pytest_cache/
+node_modules/
+.DS_Store
+Thumbs.db
+
+# Media / scan data
+*.jpg
+*.jpeg
+*.png
+*.tif
+*.tiff
+*.dng
+*.raw
+*.exr
+*.mp4
+*.mov
+*.avi
+*.mkv
+
+# 3D / reconstruction / model data
+*.ply
+*.obj
+*.fbx
+*.glb
+*.gltf
+*.usd
+*.usdz
+*.rsproj
+*.rcproj
+*.e57
+*.las
+*.laz
+
+# AI model / checkpoint
+*.ckpt
+*.pt
+*.pth
+*.onnx
+*.safetensors
+
+# Archives
+*.zip
+*.7z
+*.rar
+*.tar
+*.gz
