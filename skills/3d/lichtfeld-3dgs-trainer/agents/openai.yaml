@@ -1,0 +1,4 @@
+interface:
+  display_name: "LichtFeld 3DGS Trainer"
+  short_description: "LichtFeld batch 3DGS training, COLMAP QC, RC handoff, and auto-feeder parsing"
+  default_prompt: "Use $lichtfeld-3dgs-trainer to parse a LichtFeld 3DGS batch list, validate COLMAP or RealityScan-exported inputs, and run jobs one by one with verified PLY outputs."

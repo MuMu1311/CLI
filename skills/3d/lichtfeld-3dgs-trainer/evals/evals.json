@@ -1,0 +1,23 @@
+{
+  "skill_name": "lichtfeld-3dgs-trainer",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "下面你自动进行这2组的训练，完成一组再训练下一组：1.用高参数训练3DGS，images和COLMAP位置：X:\\Example\\A\\COLMAP\\Component1，输出文件放这：X:\\Example\\A\\PLY\\Component1 2.用高参数训练3DGS，images和COLMAP位置：X:\\Example\\A\\COLMAP\\Component8，输出文件放这：X:\\Example\\A\\PLY\\Component8",
+      "expected_output": "Parse two sequential jobs, default to 30000 iterations, 10M-to-8M cap fallback, and 4096 width.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "RealityScan导出的COLMAP standard，images和COLMAP位置：X:\\Example\\RC_EXPORT\\COLMAP，输出文件放这：X:\\Example\\RC_EXPORT\\PLY\\V1，高参数训练3DGS",
+      "expected_output": "Treat this as an RC handoff, verify COLMAP/images and undistort state, then train sequentially.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "两组都输出到 X:\\Example\\D\\PLY，检查后再跑。",
+      "expected_output": "Warn that duplicate output folders can overwrite or mix results; do not train until fixed.",
+      "files": []
+    }
+  ]
+}
