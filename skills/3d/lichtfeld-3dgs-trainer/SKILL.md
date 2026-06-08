@@ -12,6 +12,7 @@ Use this skill to turn terse LichtFeld/3DGS training requests into concrete, ver
 - Before training, read `references/training-rules.md`.
 - For Chinese batch prompts, pasted path lists, or 自动下料机 text, read `references/auto-feeder-template.md` and prefer `scripts/parse_training_batch.py`.
 - For RealityScan/RealityCapture/RC export, Registration, COLMAP standard, undistortion, or project-folder handoff, read `references/rc-realityscan-handoff.md`.
+- For ComfyUI, ComfyUI-3D-Pack, ComfyUI_3DGaussianSplatting, SAM3D, MVDream, LGM, workflow JSON, or ComfyUI-generated PLY/OBJ/GLB handoff, read `references/comfyui-3dgs-handoff.md`.
 - For the reason behind `5K -> 4096` and `10M -> 8M` fallback rules, read `references/verified-runs.md`.
 - Treat any bundled or named 自动下料机 file as a sample only. The actual job list comes from the current user message or the file path the user names.
 
@@ -24,17 +25,19 @@ Use this skill to turn terse LichtFeld/3DGS training requests into concrete, ver
 5. Keep batch control, queues, and summary files outside the user's final PLY output directory.
 6. Final output directories should contain LichtFeld training artifacts only, such as `splat_30000.ply`, `training_manifest.json`, `training_summary.md`, `checksums.sha256`, `logs`, `stage`, and `training_output_high_*`.
 7. If the user needs RC project creation, RC export, lens/undistortion decisions, or crash recovery, route to `rc-realityscan-workflow`; this skill takes over once valid COLMAP/images data exists.
+8. If the user needs ComfyUI nodes, workflows, previews, single-image/few-image 3D assets, or ComfyUI-generated PLY/Mesh inspection, route to `comfyui-3dgs-project-operator` if available; this skill trains only from images + COLMAP sparse.
 
 ## Workflow
 
 1. Parse the queue. Every job must have `input_colmap_root` and `output_dir`.
 2. Preflight inputs. Confirm an image directory, COLMAP text model files, and non-empty registered images in `images.txt`.
 3. For RC/RealityScan exports, confirm the input is an exported COLMAP directory, not a raw source folder, `.rsproj` data folder, or model export folder.
-4. Create a clear control directory named with date, iteration, caps, and width, for example `<CONTROL_ROOT>\_3DGS_BATCH_CONTROL\<SCENE>_30000_10m8m_4096`.
-5. Train sequentially. Try `10M/4096/30000`, then fall back to `8M`, then `6M` only if needed.
-6. Reuse a valid `stage\undistorted` for the same input and parameters instead of repeating expensive preprocessing after a cap-only fallback.
-7. Verify each job from real artifacts and manifest fields. Do not call a process launch a success.
-8. Report briefly in Chinese: job count, actual parameters, PLY path, and blocker if any.
+4. For ComfyUI outputs, confirm the input is not just a PLY/OBJ/GLB/texture. Without COLMAP sparse files, do not train.
+5. Create a clear control directory named with date, iteration, caps, and width, for example `<CONTROL_ROOT>\_3DGS_BATCH_CONTROL\<SCENE>_30000_10m8m_4096`.
+6. Train sequentially. Try `10M/4096/30000`, then fall back to `8M`, then `6M` only if needed.
+7. Reuse a valid `stage\undistorted` for the same input and parameters instead of repeating expensive preprocessing after a cap-only fallback.
+8. Verify each job from real artifacts and manifest fields. Do not call a process launch a success.
+9. Report briefly in Chinese: job count, actual parameters, PLY path, and blocker if any.
 
 ## Success Standard
 
@@ -49,6 +52,7 @@ A job is complete only when all of these are true:
 ## Supporting Skills
 
 - Use `rc-realityscan-workflow` for RealityScan/RealityCapture project setup, export, undistortion decisions, cache cleanup, or crash recovery.
+- Use `comfyui-3dgs-project-operator` for ComfyUI project setup, workflow JSON, custom nodes, generated previews, and ComfyUI-produced PLY/Mesh inspection.
 - Use `systematic-debugging` for unknown errors: collect evidence first, then judge.
 - Use `verification-before-completion` before claiming a training, parser, or publish task is complete.
 

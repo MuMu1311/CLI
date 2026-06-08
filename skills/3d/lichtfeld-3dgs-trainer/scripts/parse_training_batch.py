@@ -61,6 +61,8 @@ def _extract_params(text: str) -> dict[str, Any]:
         params["sequential"] = True
     if re.search(r"RealityScan|RealityCapture|COLMAP\s*standard|Registration", text, re.IGNORECASE):
         params["rc_export_handoff"] = True
+    if re.search(r"ComfyUI|ComfyUI-3D-Pack|ComfyUI_3DGaussianSplatting|SAM3D|MVDream|LGM|workflow", text, re.IGNORECASE):
+        params["comfyui_project_handoff"] = True
     return params
 
 

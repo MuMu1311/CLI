@@ -23,6 +23,15 @@ Before training, check:
 
 For RC/RealityScan exports, also read `rc-realityscan-handoff.md`.
 
+For ComfyUI, ComfyUI-3D-Pack, ComfyUI_3DGaussianSplatting, SAM3D, MVDream, LGM, or workflow JSON, read `comfyui-3dgs-handoff.md`.
+
+| ComfyUI input | Action |
+| --- | --- |
+| workflow JSON | Hand off to ComfyUI project operations |
+| ComfyUI-generated PLY/OBJ/GLB/texture | Inspect or archive; not a LichtFeld training input |
+| multi-view images + COLMAP sparse | Enter LichtFeld preflight |
+| single/few-image preview 3DGS | Treat as preview, not formal multi-view training |
+
 ## Parameters
 
 Explicit user values override defaults.

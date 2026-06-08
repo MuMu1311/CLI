@@ -8,6 +8,7 @@ Reusable Codex skill for LichtFeld Studio 3DGS training from COLMAP/RealityScan 
 - Validates COLMAP/images handoff before expensive training.
 - Applies high-parameter defaults: 30000 iterations, 10M-to-8M cap fallback, 4096 width.
 - Routes RealityScan project/export/undistortion problems to `rc-realityscan-workflow`.
+- Routes ComfyUI workflow/node/preview asset problems to `comfyui-3dgs-project-operator` when available.
 - Requires real PLY, manifest, summary, and checksum evidence before reporting success.
 
 ## Structure

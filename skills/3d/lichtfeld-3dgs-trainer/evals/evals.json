@@ -18,6 +18,12 @@
       "prompt": "两组都输出到 X:\\Example\\D\\PLY，检查后再跑。",
       "expected_output": "Warn that duplicate output folders can overwrite or mix results; do not train until fixed.",
       "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "ComfyUI-3D-Pack produced MVDream_CatCoffee_3DGS.ply. Can I continue high-parameter LichtFeld training from it?",
+      "expected_output": "Identify this as a ComfyUI artifact handoff. Explain that a PLY alone is not a LichtFeld training input; images plus COLMAP sparse are required.",
+      "files": []
     }
   ]
 }
