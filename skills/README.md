@@ -2,7 +2,7 @@
 
 ## 3D
 
-- `3d/rc-realityscan-workflow` - RealityScan/RealityCapture setup, naming, batch, export, cache, and crash recovery workflow
+- `3d/rc-realityscan-workflow` - RealityScan/RealityCapture setup, naming, scan training, crop-box handoff, export, cache, and crash recovery workflow
 
 ## Knowledge
 

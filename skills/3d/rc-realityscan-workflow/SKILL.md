@@ -1,6 +1,6 @@
 ---
 name: rc-realityscan-workflow
-description: Use when planning, creating, running, resuming, auditing, or recovering RealityScan/RealityCapture (RC) production projects on Windows, including initial folder creation, asset naming, color-sequence discovery, CLI alignment, high-detail/model export, HBB/FKB organization, cache cleanup, crash recovery, and evidence-based reporting for BXC/YCL-style batches.
+description: Use when planning, creating, running, resuming, auditing, training, exporting, or recovering RealityScan/RealityCapture (RC) production projects on Windows, including initial folder creation, asset naming, scan dataset intake, CLI alignment, crop-box handoff, preview/normal/high reconstruction, high-detail/model export, HBB/FKB organization, cache cleanup, crash recovery, and evidence-based reporting for BXC/YCL-style batches.
 ---
 
 # RC RealityScan Workflow
@@ -14,6 +14,7 @@ Prefer live filesystem/process checks over memory. Never claim success without r
 - **New RC project, folder layout, naming, dry run**: read `references/project-setup-naming.md`.
 - **BXC/YCL Stage 2 alignment project generation**: read `references/bxc-ycl-stage2.md`.
 - **High Detail / Clean / texture / export model or point cloud**: read `references/rc-cli-chain.md`.
+- **Scan model training, crop-box handoff, preview/normal/high reconstruction**: read `references/scan-model-training.md`; reuse `templates/rc_project_structure.md`, `templates/agent_crop_task.md`, `templates/rc_pipeline_bat_template.bat`, and `templates/rc_pipeline_powershell_template.ps1`.
 - **Batch monitor, resume, failure report**: read `references/batch-monitoring.md`.
 - **Mini Dump, autosave, corrupt project, cache cleanup**: read `references/crash-recovery-cache.md`.
 - **YCL-specific production paths**: read `references/ycl-production.md`.
@@ -23,6 +24,8 @@ Prefer live filesystem/process checks over memory. Never claim success without r
 - Do not modify source image folders. Source roots are read-only.
 - Do not overwrite existing `.rsproj`, same-name RealityScan data folders, `HBB`, `FKB`, `mod`, or exported models.
 - Do not run Align, High Detail, export, or long batch jobs unless the user has approved that action in the current task.
+- Do not run High Quality reconstruction automatically. It needs successful alignment, existing preview, confirmed crop boxes, and explicit user approval.
+- Do not mix sculpture scans, exhibition hall scans, 360/panoramic sources, screenshots, thumbnails, or social-compressed images unless the user explicitly asks for that combined input.
 - Do not treat empty stdout/stderr, wrapper timeout, or valid file paths as success or failure by themselves.
 - Keep logs outside asset folders in a shared log root.
 - Preserve `.rsproj` together with its same-name data directory. Moving only the `.rsproj` breaks projects.
