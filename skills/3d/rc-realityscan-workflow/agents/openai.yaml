@@ -1,0 +1,4 @@
+interface:
+  display_name: "RC RealityScan Workflow"
+  short_description: "RC setup, naming, batch, export, recovery"
+  default_prompt: "Use $rc-realityscan-workflow to create, run, monitor, or recover a RealityScan/RC production workflow safely."

@@ -1,5 +1,9 @@
 # Skill Packs
 
+## 3D
+
+- `3d/rc-realityscan-workflow` - RealityScan/RealityCapture setup, naming, batch, export, cache, and crash recovery workflow
+
 ## Knowledge
 
 - `knowledge/awesome-ai-pedia` - curated AI learning paths, tools, and workflows
