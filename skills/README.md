@@ -22,6 +22,12 @@
 
 - `ppt/README.md` - PPT skill routing and source index for `academic-ppt`, `codex-ppt`, and `codex-ppt-skill`
 
+## Vendor / Previously Installed
+
+- `vendor/README.md` - source index for previously installed official and third-party skills
+- `vendor/install_previous_skills.ps1` - Windows restore script
+- `vendor/install_previous_skills.sh` - Linux/macOS restore script
+
 ## Knowledge
 
 - `knowledge/awesome-ai-pedia` - curated AI learning paths, tools, and workflows
